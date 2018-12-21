@@ -2,7 +2,7 @@
 <div>
   <SignUp v-show="isSeen && !currentlyLoading && !loggedIn"/>
   <div class="profile" v-show="!isSeen || !currentlyLoading && loggedIn">
-    <Spinner v-show="currentlyLoading" id="pacman" name="pacman" color="#28284e"/>
+    <Spinner v-show="currentlyLoading" id="pacman" name="ball-scale-multiple" color="#292b2c"/>
     <b-alert id="alert" show dismissible fade v-show="isWarning" variant="warning">{{this.errorMessage}}</b-alert>
     <b-container  class="bv-example-row">
     <b-row >
@@ -99,7 +99,7 @@ export default {
     return {
       reactive: true,
       isSeen: true,
-      currentlyLoading: true,
+      currentlyLoading: false,
       usersTeams: [],
       memberTeams: [],
       model:{},
@@ -114,9 +114,15 @@ export default {
     }
   },
 
-  async created() {
+  mounted() {
+    if (!document.cookie) {
+      this.currentlyLoading = true
+    } else {
+     this.currentlyLoading = false
     this.current_user_id = jwtDecode(document.cookie.split('=')[1]).id
     this.refreshUsersTeams()
+    }
+    
     
   },
 

@@ -97,19 +97,8 @@
           </b-list-group>
         </b-card>
       </div>
-
-
-
-
-
-
     </div>
-
-
-
-
-
-    </div>
+  </div>
 </template>
 
 <script>
@@ -145,10 +134,10 @@ export default {
   },
 
 
-    async created(){
+    async mounted(){
       console.log("calendar info available to sprint page:", CalendarView)
       console.log("SprintStore.data.sprintInfo: ", SprintStore.data.sprintInfo)
-      if (SprintStore.data.sprintInfo.length === 0) {
+      if (!SprintStore.data.sprintInfo) {
         this.$router.push('/profile')
       }
 
@@ -160,15 +149,15 @@ export default {
        this.teamName = await SprintStore.data.teamName
        this.currentSprintId = await SprintStore.data.sprintId
      //load in current standUps from stand up store
-       await this.currentSprintInfo(this.currentSprintId)
-      console.log("CalendarView created")
-      console.log("this.sprintInfo: ", this.sprintInfo)
-      console.log("this.teamName: ", this.teamName)
+       this.currentSprintInfo(this.currentSprintId)
+      // console.log("CalendarView created")
+      // console.log("this.sprintInfo: ", this.sprintInfo)
+      // console.log("this.teamName: ", this.teamName)
       //this should get all standups for this sprint and store them in the StandUpsStore
-      await StandUpsStore.methods.getStandups(this.sprintInfo[1].id)
-      console.log("StandUpsStore.data.allStandupsForThisSprint[0]: ",
-      StandUpsStore.data.allStandupsForThisSprint[0])
-      console.log(StandUpsStore.data.allStandupsForThisSprint[0])
+      StandUpsStore.methods.getStandups(this.sprintInfo[1].id)
+      // console.log("StandUpsStore.data.allStandupsForThisSprint[0]: ",
+      // StandUpsStore.data.allStandupsForThisSprint[0])
+      // console.log(StandUpsStore.data.allStandupsForThisSprint[0])
       //populate standups for each day
       let day1 = []
       StandUpsStore.data.allStandupsForThisSprint[0].forEach((standup) =>{
@@ -176,9 +165,9 @@ export default {
           day1.push(standup)
         }
       })
-      console.log("day1: ", day1)
+      // console.log("day1: ", day1)
       this.standupsDay1.push(day1)
-      console.log("this.standupsDay1: ", this.standupsDay1)
+      // console.log("this.standupsDay1: ", this.standupsDay1)
     },
 
   methods: {

@@ -55,8 +55,12 @@ export default {
   },
 
   async created() {
-     await this.getUserInfo()
-     this.startTime()
+ 
+  },
+
+  mounted() {
+    this.getUserInfo()
+    this.startTime()
   },
 
   methods: {
