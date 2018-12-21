@@ -145,14 +145,10 @@ export default {
        this.currentSprintId = await SprintStore.data.sprintId
      //load in current standUps from stand up store
        this.currentSprintInfo(this.currentSprintId)
-      // console.log("CalendarView created")
-      // console.log("this.sprintInfo: ", this.sprintInfo)
-      // console.log("this.teamName: ", this.teamName)
+
       //this should get all standups for this sprint and store them in the StandUpsStore
       StandUpsStore.methods.getStandups(this.sprintInfo[1].id)
-      // console.log("StandUpsStore.data.allStandupsForThisSprint[0]: ",
-      // StandUpsStore.data.allStandupsForThisSprint[0])
-      // console.log(StandUpsStore.data.allStandupsForThisSprint[0])
+
       //populate standups for each day
       let day1 = []
       StandUpsStore.data.allStandupsForThisSprint[0].forEach((standup) =>{
@@ -160,9 +156,8 @@ export default {
           day1.push(standup)
         }
       })
-      // console.log("day1: ", day1)
+ 
       this.standupsDay1.push(day1)
-      // console.log("this.standupsDay1: ", this.standupsDay1)
     },
 
   methods: {
@@ -189,19 +184,7 @@ export default {
     },
 
     submitYourStandUp(){
-      console.log("submitYourStandUp")
-      console.log("yourStandUpYesterday: ", this.yourStandUpYesterday)
-
       this.yourStandUpSubmitted = true
-      // let newStandUp = {
-      //   yesterday: this.yourStandUpYesterday,
-      //   today: this.yourStandUpToday,
-      //   helps: this.yourStandUpHelps,
-      //   // this should eventually be dynamic:
-      //   dayInSprint: 1,
-      //   sprint_id: this.currentSprintId,
-      //   user_id: 3,
-      // }
     }
 
   },
