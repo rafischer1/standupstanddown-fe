@@ -1,6 +1,8 @@
 # Q3 Project G103 - - - Stand Up!
 
-> Vue.js frontend for the Stand Up Scrum App 
+__Vue.js frontend for the Stand Up Scrum App__
+
+> This project fulfilled the requirement for the Galvanize Quarter 3 group application. Built with a team of 3 developers we decided to use Vue.js as our 'foreign environment'. Any edits/commits made after 12/18/2018 are my own in an efffort to further develop the project.
 
 ## Vue-Bootstrap
 
