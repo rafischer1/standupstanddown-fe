@@ -1,6 +1,8 @@
 <template>
 <div>
   <SignUp v-show="isSeen && !currentlyLoading && !loggedIn"/>
+        <!-- createSprint view component rendered here-->
+     <!-- <CreateSprint v-show="noInfo" class="createSprint" /> -->
   <div class="profile" v-show="!isSeen || !currentlyLoading && loggedIn">
     <Spinner v-show="currentlyLoading" id="pacman" name="ball-scale-multiple" color="#292b2c"/>
     <b-alert id="alert" show dismissible fade v-show="isWarning" variant="warning">{{this.errorMessage}}</b-alert>
@@ -45,9 +47,7 @@
               <b-list-group-item class="yourTeamsItem" button  @click="goToSprint(team.id, team.name)">
                 {{team.name[0].toUpperCase() + team.name.substring(1)}}
               </b-list-group-item>
-              
-             
-               </b-list-group>
+            </b-list-group>
            </div>
          </b-col>
 
@@ -81,6 +81,30 @@
        <b-btn class="mt-3" variant="outline-dark" block @click="hideModal &&editTeam(teamName)">Edit</b-btn>
     </b-modal>
 
+     <!-- modal below here as last rendered thing in component -->
+     <b-modal
+        ref="postSprintModal"
+        id="postSprintModal"
+        hide-footer
+        variant="dark"
+        title="Set First Sprint for New Team"
+        effect="fade/zoom"
+      >
+        <div>
+          Sprint Length: {{rangeValue}} Stand Ups
+          <b-form-input type="range" variant="info" min="5" max="10" step="1" v-model="rangeValue"></b-form-input>
+        </div>
+        <hr>
+        <div>Sprint Goal</div>
+        <b-form-input type="text" v-model="rangeGoal"></b-form-input>
+        <br>
+        <b-button
+          @click="postSprint(3, +(rangeValue), rangeGoal)"
+          variant="outline-info text-dark"
+          value="submit"
+        >{{teamName.toUpperCase() + teamName.substring(1)}}...Get Agile!</b-button>
+      </b-modal>
+
     </div>
   </div>
 </template>
@@ -98,6 +122,8 @@ export default {
   data () {
     return {
       reactive: true,
+      rangeValue: 5,
+      rangeGoal: "",
       isSeen: true,
       currentlyLoading: false,
       usersTeams: [],
@@ -110,7 +136,8 @@ export default {
       joinTeamName: '',
       current_user_id: 0,
       errorMessage: '',
-      isWarning: false
+      isWarning: false,
+      lastCreatedTeamId: 0,
     }
   },
 
@@ -144,6 +171,8 @@ export default {
            this.loggedIn = true
            this.isSeen = false
            this.currentlyLoading = false
+           this.lastCreatedTeamId = res[res.length - 1].id
+      
            // last set usersTeams array
           return this.usersTeams.push(team)
         }
@@ -169,9 +198,10 @@ export default {
     async addTeam(event) {
       event.preventDefault()
       await TeamsStore.methods.createTeam(this.teamName)
-      event.target.reset()
+      this.refreshUsersTeams()
+      this.openModal(this.teamName)
       this.teamName = ''
-      return this.refreshUsersTeams()
+      return event.target.reset()
     },
 
     async goToSprint(teamId, teamName){
@@ -213,14 +243,41 @@ export default {
       this.$refs.editModal.show()
     },
 
-     hideModal () {
+     hideModal() {
       this.teamName = ''
       this.$refs.editModal.hide()
-    }
+    },
+
+     hideSprintModal () {
+      this.$refs.postSprintModal.hide()
+    },
+    
+   openModal(name) {
+      this.$refs.postSprintModal.show()
+    },
+
+    postSprint(lastCreatedTeamId, sprint_length, sprint_goal) {
+      if (!sprint_goal) {
+        alert("Please enter a Sprint Goal for your team's betterment");
+      }
+      console.log(
+        "in the postSprint in the sprint component:",
+        this.lastCreatedTeamId,
+        sprint_length,
+        sprint_goal
+      );
+      
+      SprintStore.methods.postSprint(this.lastCreatedTeamId, sprint_length, sprint_goal);
+      this.hideSprintModal();
+      this.rangeValue = 5;
+      this.rangeGoal = "";
+    },
+
 
   },
   components: {
-    SignUp
+    SignUp,
+
   }
 
 }

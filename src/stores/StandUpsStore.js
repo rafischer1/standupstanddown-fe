@@ -1,4 +1,4 @@
-const jwtDecode = require('jwt-decode')
+const jwtDecode = require('jwt-decode');
 
 const StandUpsStore = {
   data: {
@@ -11,42 +11,38 @@ const StandUpsStore = {
      * Get one user's info based on token id for component
      */
     async getSprintInfo(sprintId) {
-      const tokenDecoded = jwtDecode(document.cookie.split('=')[1])
-      let creatorId = tokenDecoded.id
       await fetch(`http://localhost:3000/standUps/${sprintId}`, {
         credentials: 'include',
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
       }).then(async (response) => {
-        let sprintData = await response.json()
-        console.log("get one user store info:", sprintData)
-        return sprintData
-      })
+        const sprintData = await response.json();
+        console.log('get one user store info:', sprintData);
+        return sprintData;
+      });
     },
 
     async getStandups(sprintId) {
       await fetch(`http://localhost:3000/standUps/${sprintId}`, {
         credentials: 'include',
-        method: "GET",
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
         },
       }).then(async (response) => {
-        let standups = await response.json()
-        console.log("getStandups response", standups)
-        StandUpsStore.data.allStandupsForThisSprint.push(standups)
-        return standups
-      })
+        const standups = await response.json();
+        console.log('getStandups response', standups);
+        StandUpsStore.data.allStandupsForThisSprint.push(standups);
+        return standups;
+      });
     },
 
 
-
-
   },
-}
+};
 
-export default StandUpsStore
+export default StandUpsStore;

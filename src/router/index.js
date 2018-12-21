@@ -1,11 +1,11 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import SignUp from '../components/SignUp.vue'
-import Profile from '../components/Profile.vue'
-import Sprint from '../components/Sprint.vue'
-import NotFound from '../components/error-pages/NotFound.vue'
+import Vue from 'vue';
+import Router from 'vue-router';
+import SignUp from '../components/SignUp.vue';
+import Profile from '../components/Profile.vue';
+import Sprint from '../components/Sprint.vue';
+import NotFound from '../components/error-pages/NotFound.vue';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   mode: 'history',
@@ -36,4 +36,4 @@ export default new Router({
       component: Sprint,
     },
   ],
-})
+});

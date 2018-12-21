@@ -5,14 +5,14 @@
 
     <!-- below here is rendered after loading spinner timeout -->
     <div v-show="!notLoading" class="sprint">
-      <b-btn class="postASprintBtn" v-b-modal.postSprintModal>Create A Sprint</b-btn>
+      <!-- <b-btn class="postASprintBtn" v-b-modal.postSprintModal>Create A Sprint</b-btn> -->
 
      <!-- calendar view component rendered here-->
      <CalendarView class="cal" :sprintLength="sprintLength"/>
 
      <div class="sprintNotes">Sprint Notes:
         <b-form-textarea v-model="sprintInfo[1].sprint_notes" type="text" value="sprintInfo[1].sprint_notes" :rows="3"></b-form-textarea>
-        <b-button id="sprintCardUpBtn" variant="outlin-dark">✎ Notes</b-button>
+        <b-button id="sprintCardUpBtn" variant="outline-dark">✎ Notes</b-button>
      </div >
 
       <div class="sprintCardDiv" v-for="standup in standupsDay1[0]">
@@ -105,21 +105,19 @@
 import CalendarView from "./CalendarView";
 import SprintStore from "../stores/SprintStore";
 import StandUpsStore from "../stores/StandUpsStore";
-import Spinner from './error-pages/Spinner'
+import Spinner from './error-pages/Spinner';
 
 export default {
   name: "Sprint",
   data() {
     return {
       selectedStandupDay: '',
-      rangeValue: 5,
       notLoading: false,
-      rangeGoal: "",
       sprintLength: 5,
-      sprintGoalText: "",
       member1YesterdayText: "",
       member1TodayText: "",
       member1HelpsText: "",
+      sprintGoalText: "",
       teamName: '',
       sprintInfo: '',
       currentSprintId: 0,
@@ -137,10 +135,7 @@ export default {
     async mounted(){
       console.log("calendar info available to sprint page:", CalendarView)
       console.log("SprintStore.data.sprintInfo: ", SprintStore.data.sprintInfo)
-      if (!SprintStore.data.sprintInfo) {
-        this.$router.push('/profile')
-      }
-
+    
       this.notLoading = true
       setTimeout(() => {
         this.notLoading = false
@@ -171,16 +166,6 @@ export default {
     },
 
   methods: {
-    //
-    // hideModal () {
-    //   this.$refs.postSprintModal.hide()
-    // },
-    //
-    // showModal(standup) {
-    //   console.log("show modal")
-    //   this.$refs.editStandupModal.show()
-    // },
-
     async hitThatRoute() {
       let response = await fetch("http://localhost:3000/teams_users", {
         credentials: "include"
@@ -196,21 +181,6 @@ export default {
     async currentSprintInfo() {
       let response = await StandUpsStore.methods.getSprintInfo(this.currentSprintId)
       console.log("response to currentSprintIno in sprint vue:", response)
-    },
-
-    postSprint(team_id, sprint_length, sprint_goal) {
-      if (!sprint_goal) {
-        alert("Please enter a Sprint Goal for your team's betterment");
-      }
-      console.log(
-        "in the postSprint in the sprint component:",
-        team_id,
-        sprint_length,
-        sprint_goal
-      );
-      SprintStore.methods.postSprint(team_id, sprint_length, sprint_goal);
-      this.rangeValue = 5;
-      this.rangeGoal = "";
     },
 
     addTeamMember(event) {
@@ -237,7 +207,8 @@ export default {
   },
 
   components: {
-    CalendarView
+    CalendarView,
+
   }
 };
 </script>
