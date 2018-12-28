@@ -11,7 +11,7 @@
      <CalendarView class="cal" :sprintLength="sprintLength"/>
 
      <div class="sprintNotes">Sprint Notes:
-        <b-form-textarea v-model="sprintInfo[1].sprint_notes" type="text" value="sprintInfo[1].sprint_notes" :rows="3"></b-form-textarea>
+        <b-form-textarea v-model="sprint_notes" type="text" value="sprint_notes" :rows="3"></b-form-textarea>
         <b-button id="sprintCardUpBtn" variant="outline-dark">✎ Notes</b-button>
      </div >
 
@@ -118,6 +118,7 @@ export default {
       member1TodayText: "",
       member1HelpsText: "",
       sprintGoalText: "",
+      sprint_notes: "",
       teamName: '',
       sprintInfo: '',
       currentSprintId: 0,
@@ -133,14 +134,14 @@ export default {
 
 
     async mounted(){
-      console.log("calendar info available to sprint page:", CalendarView)
       console.log("SprintStore.data.sprintInfo: ", SprintStore.data.sprintInfo)
     
       this.notLoading = true
       setTimeout(() => {
         this.notLoading = false
-      }, 2500)
-       this.sprintInfo = await SprintStore.data.sprintInfo
+      }, 2000)
+       this.sprintInfo = SprintStore.data.sprintInfo
+       this.sprint_notes = this.sprintInfo[1].sprint_notes
        this.teamName = await SprintStore.data.teamName
        this.currentSprintId = await SprintStore.data.sprintId
      //load in current standUps from stand up store
@@ -151,7 +152,7 @@ export default {
 
       //populate standups for each day
       let day1 = []
-      StandUpsStore.data.allStandupsForThisSprint[0].forEach((standup) =>{
+      StandUpsStore.data.allStandupsForThisSprint[0].map((standup) =>{
         if(standup.dayInSprint === 1){
           day1.push(standup)
         }
@@ -161,7 +162,7 @@ export default {
     },
 
   methods: {
-    async hitThatRoute() {
+    async teamsUsersRoute() {
       let response = await fetch("http://localhost:3000/teams_users", {
         credentials: "include"
       });
@@ -188,10 +189,8 @@ export default {
     }
 
   },
-
   components: {
     CalendarView,
-
   }
 };
 </script>

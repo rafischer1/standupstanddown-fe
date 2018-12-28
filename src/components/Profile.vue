@@ -97,9 +97,12 @@
         <hr>
         <div>Sprint Goal</div>
         <b-form-input type="text" v-model="rangeGoal"></b-form-input>
+        <hr>
+         <div>Sprint Notes</div>
+        <b-form-input type="text" v-model="sprintNotes"></b-form-input>
         <br>
         <b-button
-          @click="postSprint(3, +(rangeValue), rangeGoal)"
+          @click="postSprint(3, +(rangeValue), rangeGoal, sprintNotes)"
           variant="outline-info text-dark"
           value="submit"
         >{{teamName.toUpperCase() + teamName.substring(1)}}...Get Agile!</b-button>
@@ -124,6 +127,7 @@ export default {
       reactive: true,
       rangeValue: 5,
       rangeGoal: "",
+      sprintNotes: "",
       isSeen: true,
       currentlyLoading: false,
       usersTeams: [],
@@ -137,7 +141,7 @@ export default {
       current_user_id: 0,
       errorMessage: '',
       isWarning: false,
-      lastCreatedTeamId: 0,
+      lastCreatedTeamId: 1,
     }
   },
 
@@ -256,7 +260,7 @@ export default {
       this.$refs.postSprintModal.show()
     },
 
-    postSprint(lastCreatedTeamId, sprint_length, sprint_goal) {
+    postSprint(lastCreatedTeamId, sprint_length, sprint_goal, sprintNotes) {
       if (!sprint_goal) {
         alert("Please enter a Sprint Goal for your team's betterment");
       }
@@ -267,10 +271,11 @@ export default {
         sprint_goal
       );
       
-      SprintStore.methods.postSprint(this.lastCreatedTeamId, sprint_length, sprint_goal);
+      SprintStore.methods.postSprint(this.lastCreatedTeamId, sprint_length, sprint_goal, this.sprintNotes);
       this.hideSprintModal();
       this.rangeValue = 5;
       this.rangeGoal = "";
+      this.sprintNotes = "";
     },
 
 
