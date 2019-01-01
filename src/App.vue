@@ -21,10 +21,14 @@
          <img :src="currentUserPhoto"  alt="BV"> 
       </b-navbar>
     </header>
- 
+
     <Spinner v-show="loggingOut" id="pacman" name="ball-scale-multiple" color="#292b2c" />
 
     <main  v-show="!loggingOut">
+
+      <!-- signUp page will show after logged out and on '/' load -->
+      <SignUp v-show="!loggedIn"></SignUp>
+     
       <!-- Navbar on top and will render router components through the router-view below - no need to import them -->
       <router-view></router-view>
     </main>
@@ -37,7 +41,8 @@
 </template>
 
 <script>
-import UsersStore from "./stores/UsersStore"
+import UsersStore from "./stores/UsersStore";
+import SignUp from './components/SignUp.vue'
 const jwtDecode = require('jwt-decode')
 
 export default {
@@ -53,9 +58,8 @@ export default {
       currentUserOther: ''
     }
   },
-
-  async created() {
- 
+  components: {
+    SignUp,
   },
 
   mounted() {

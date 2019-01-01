@@ -3,7 +3,7 @@
   <p>
     404 - Page Not Found
   </p>
-  <b-button variant="dark" href="/sign-up">Home</b-button>
+  <b-button variant="dark" href="/profile">Back to Profile</b-button>
 </div>
 </template>
 

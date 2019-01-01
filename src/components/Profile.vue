@@ -82,7 +82,7 @@
     </b-modal>
 
      <!-- modal below here as last rendered thing in component -->
-     <b-modal
+     <b-modal v-show="!isWarning"
         ref="postSprintModal"
         id="postSprintModal"
         hide-footer
